@@ -1,0 +1,82 @@
+﻿@model seguimiento_de_tareas_de_proyectos_MVC.Models.Tarea
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tarea</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prioridad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prioridad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaVencimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaVencimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProyectoID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProyectoID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EstadoID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EstadoID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Proyecto.NombreProyecto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proyecto.NombreProyecto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado.NombreEstado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado.NombreEstado)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TareaID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
