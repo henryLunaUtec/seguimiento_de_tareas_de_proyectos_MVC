@@ -44,8 +44,6 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
         }
 
         // POST: Usuarios/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "UsuarioID,Nombre,Correo,Password,RolID")] Usuario usuario)
@@ -78,8 +76,6 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que quiere enlazarse. Para obtener 
-        // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UsuarioID,Nombre,Correo,Password,RolID")] Usuario usuario)
