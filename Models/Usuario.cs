@@ -13,8 +13,11 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Models
     {
         [Key]
         public int UsuarioID { get; set; }
+        [Required(ErrorMessage = "El nombre es obligatorio para el registro")]
         public string Nombre { get; set; }
+        [Required(ErrorMessage = "El correo es obligatorio para el registro")]
         public string Correo { get; set; }
+        [Required(ErrorMessage = "La contraseña es obligatorio para el registro")]
         public string Password { get; set; }
         public int RolID { get; set; }
 
