@@ -1,33 +1,62 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Dashboard Principal";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+<div class="container mt-4">
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm border-start border-primary border-5">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Sistema de Gestión de Tareas</h1>
+            <p class="col-md-8 fs-4 text-muted">Bienvenido al panel de control del Grupo 6. Aquí puedes administrar proyectos, asignar responsabilidades y monitorear el avance de cada tarea en tiempo real.</p>
+            <hr class="my-4">
+            <div class="d-flex gap-2">
+                @Html.ActionLink("Ver Mis Tareas", "Index", "Tareas", null, new { @class = "btn btn-primary btn-lg px-4" })
+                @Html.ActionLink("Nuevo Proyecto", "Create", "Proyecto", null, new { @class = "btn btn-outline-secondary btn-lg px-4" })
+            </div>
+        </div>
     </div>
-</main>
+
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="h5">Usuarios</h3>
+                    <p class="text-muted small">Administra los integrantes del equipo y sus roles asignados.</p>
+                    @Html.ActionLink("Gestionar", "Index", "Usuarios", null, new { @class = "btn btn-sm btn-outline-primary" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-folder-fill text-success" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="h5">Proyectos</h3>
+                    <p class="text-muted small">Visualiza el estado de los proyectos actuales del ciclo.</p>
+                    @Html.ActionLink("Ver Lista", "Index", "Proyecto", null, new { @class = "btn btn-sm btn-outline-success" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-check-circle-fill text-info" style="font-size: 2rem;"></i>
+                    </div>
+                    <h3 class="h5">Avance Real</h3>
+                    <p class="text-muted small">Revisa cuáles tareas están pendientes o próximas a vencer.</p>
+                    @Html.ActionLink("Revisar Tareas", "Index", "Tareas", null, new { @class = "btn btn-sm btn-outline-info" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+}
