@@ -17,13 +17,24 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
         // GET: Usuarios
         public ActionResult Index()
         {
-            var usuarios = db.Usuarios.Include(u => u.Rol);
-            return View(usuarios.ToList());
+            if (Session["UsuarioID"] == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var usuariosOrdenados = db.Usuarios
+                                      .Include(u => u.Rol)
+                                      .OrderBy(u => u.Nombre)
+                                      .ToList();
+
+            return View(usuariosOrdenados);
         }
 
         // GET: Usuarios/Details/5
         public ActionResult Details(int? id)
         {
+            if (Session["UsuarioID"] == null) return RedirectToAction("Login", "Auth");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,7 +50,11 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
         // GET: Usuarios/Create
         public ActionResult Create()
         {
-            ViewBag.RolID = new SelectList(db.Roles, "RolID", "NombreRol");
+            if (Session["UsuarioID"] == null) return RedirectToAction("Login", "Auth");
+
+            var rolesOrdenados = db.Roles.OrderBy(r => r.NombreRol).ToList();
+            ViewBag.RolID = new SelectList(rolesOrdenados, "RolID", "NombreRol");
+
             return View();
         }
 
@@ -55,13 +70,16 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.RolID = new SelectList(db.Roles, "RolID", "NombreRol", usuario.RolID);
+            var rolesOrdenados = db.Roles.OrderBy(r => r.NombreRol).ToList();
+            ViewBag.RolID = new SelectList(rolesOrdenados, "RolID", "NombreRol", usuario.RolID);
             return View(usuario);
         }
 
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (Session["UsuarioID"] == null) return RedirectToAction("Login", "Auth");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -71,7 +89,10 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.RolID = new SelectList(db.Roles, "RolID", "NombreRol", usuario.RolID);
+
+            var rolesOrdenados = db.Roles.OrderBy(r => r.NombreRol).ToList();
+            ViewBag.RolID = new SelectList(rolesOrdenados, "RolID", "NombreRol", usuario.RolID);
+
             return View(usuario);
         }
 
@@ -86,13 +107,18 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.RolID = new SelectList(db.Roles, "RolID", "NombreRol", usuario.RolID);
+
+            // LINQ: Mantenemos el orden si regresa a la vista por errores
+            var rolesOrdenados = db.Roles.OrderBy(r => r.NombreRol).ToList();
+            ViewBag.RolID = new SelectList(rolesOrdenados, "RolID", "NombreRol", usuario.RolID);
             return View(usuario);
         }
 
         // GET: Usuarios/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (Session["UsuarioID"] == null) return RedirectToAction("Login", "Auth");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

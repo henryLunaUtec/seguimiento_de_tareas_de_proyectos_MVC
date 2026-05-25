@@ -1,75 +1,72 @@
 ﻿@model IEnumerable<seguimiento_de_tareas_de_proyectos_MVC.Models.Tarea>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Listado de Tareas";
 }
 
-<h2>Index</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark m-0">Gestión de Tareas</h2>
+    <p>
+        @Html.ActionLink("Nueva Tarea", "Create", null, new { @class = "btn btn-success fw-bold shadow-sm" })
+    </p>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Titulo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Prioridad)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FechaVencimiento)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProyectoID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EstadoID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Proyecto.NombreProyecto)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Estado.NombreEstado)
-        </th>
-        <th></th>
-    </tr>
+@using (Html.BeginForm("Index", "Tareas", FormMethod.Get, new { @class = "row g-3 mb-4 bg-white p-3 rounded shadow-sm border" }))
+{
+    <div class="col-md-4">
+        <label class="form-label small fw-bold text-secondary">Filtrar por Proyecto</label>
+        @Html.DropDownList("proyectoId", null, "--- Todos los Proyectos ---", new { @class = "form-select" })
+    </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Prioridad)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaVencimiento)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProyectoID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EstadoID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Proyecto.NombreProyecto)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Estado.NombreEstado)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TareaID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TareaID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TareaID })
-        </td>
-    </tr>
+    <div class="col-md-5">
+        <label class="form-label small fw-bold text-secondary">Buscar por Título de Tarea</label>
+        <input type="text" name="buscarTitulo" value="@ViewBag.BusquedaActual" class="form-control" placeholder="Escribe para buscar..." autocomplete="off" />
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end gap-2">
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Filtrar</button>
+        <a href="@Url.Action("Index")" class="btn btn-outline-secondary w-100 fw-bold">Limpiar</a>
+    </div>
 }
 
+<table class="table table-hover table-striped table-bordered align-middle bg-white shadow-sm rounded">
+    <thead class="table-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Titulo)</th>
+            <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+            <th>@Html.DisplayNameFor(model => model.Prioridad)</th>
+            <th>@Html.DisplayNameFor(model => model.FechaVencimiento)</th>
+            <th>Proyecto</th>
+            <th>Estado</th>
+            <th class="text-center" style="width: 200px;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="fw-bold text-primary">@Html.DisplayFor(modelItem => item.Titulo)</td>
+                <td class="text-muted small">@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                <td>
+                    <span class="badge @(item.Prioridad == "Alta" ? "bg-danger" : item.Prioridad == "Media" ? "bg-warning text-dark" : "bg-secondary")">
+                        @Html.DisplayFor(modelItem => item.Prioridad)
+                    </span>
+                </td>
+                <td>
+                    @(item.FechaVencimiento.HasValue ? item.FechaVencimiento.Value.ToString("dd/MM/yyyy") : "Sin fecha")
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Proyecto.NombreProyecto)</td>
+                <td>
+                    <span class="fw-semibold">@Html.DisplayFor(modelItem => item.Estado.NombreEstado)</span>
+                </td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm">
+                        <a href="@Url.Action("Edit", new { id = item.TareaID })" class="btn btn-outline-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id = item.TareaID })" class="btn btn-outline-info">Ver</a>
+                        <a href="@Url.Action("Delete", new { id = item.TareaID })" class="btn btn-outline-danger">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

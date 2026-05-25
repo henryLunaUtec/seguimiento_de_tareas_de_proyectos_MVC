@@ -1,0 +1,119 @@
+﻿@model IEnumerable<seguimiento_de_tareas_de_proyectos_MVC.Models.Tarea>
+@{
+    ViewBag.Title = "Panel de Control y Reportes";
+    var estados = ViewBag.TareasPorEstado as Dictionary<string, int>;
+    var misTareasAdo = ViewBag.MisTareasAsignadas as List<seguimiento_de_tareas_de_proyectos_MVC.Controllers.TareaReporteDTO>;
+}
+
+<div class="container mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Panel Técnico de Reportes</h2>
+            <small class="text-muted">Evidencia de Arquitectura de Conexión Dual para la entrega</small>
+        </div>
+        <span class="badge bg-secondary p-2 shadow-sm">Tecnologías: ADO.NET + LINQ + Stored Procedures</span>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-dark text-white fw-bold py-3">
+                    <i class="bi bi-graph-up"></i> Tareas Totales por Estado
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @if (estados != null)
+                        {
+                            foreach (var est in estados)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <span class="fw-semibold text-secondary">@est.Key</span>
+                                    <span class="badge bg-primary rounded-pill fs-6">@est.Value</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white fw-bold py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-person-workspace"></i> Mis Tareas Pendientes</span>
+                </div>
+                <div class="table-responsive" style="max-height: 290px;">
+                    <table class="table table-hover table-striped align-middle mb-0 small">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Tarea</th>
+                                <th>Proyecto</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (misTareasAdo != null && misTareasAdo.Count > 0)
+                            {
+                                foreach (var tarea in misTareasAdo)
+                                {
+                                    <tr>
+                                        <td class="fw-bold text-dark">@tarea.Titulo</td>
+                                        <td class="text-muted">@tarea.NombreProyecto</td>
+                                        <td>
+                                            <span class="badge @(tarea.Prioridad == "Alta" ? "bg-danger" : "bg-secondary")">
+                                                @tarea.Prioridad
+                                            </span>
+                                        </td>
+                                        <td><span class="text-primary fw-bold">@tarea.NombreEstado</span></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="bi bi-info-circle fs-4 d-block mb-2"></i> No tienes tareas asignadas a tu ID de usuario actualmente.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white fw-bold py-3">
+            <i class="bi bi-exclamation-triangle"></i> Top 5 Tareas Críticas del Sistema 
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre de la Tarea</th>
+                        <th>Proyecto Asociado</th>
+                        <th>Fecha de Vencimiento</th>
+                        <th>Estado Actual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold text-danger">@item.Titulo</td>
+                            <td>@item.Proyecto.NombreProyecto</td>
+                            <td>@(item.FechaVencimiento.HasValue ? item.FechaVencimiento.Value.ToString("dd/MM/yyyy") : "Sin definir")</td>
+                            <td><span class="badge bg-warning text-dark fw-semibold">@item.Estado.NombreEstado</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+}

@@ -17,7 +17,17 @@ namespace seguimiento_de_tareas_de_proyectos_MVC.Controllers
         // GET: Proyectoes
         public ActionResult Index()
         {
-            return View(db.Proyectos.ToList());
+            if (Session["UsuarioID"] == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var proyectosOrdenados = db.Proyectos
+                               .OrderByDescending(p => p.FechaCreacion)
+                               .ThenBy(p => p.NombreProyecto)
+                               .ToList();
+
+            return View(proyectosOrdenados);
         }
 
         // GET: Proyectoes/Details/5

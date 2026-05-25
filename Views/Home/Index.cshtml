@@ -1,56 +1,105 @@
 ﻿@{
     ViewBag.Title = "Dashboard Principal";
+    // Casteamos el ViewBag usando la clase DTO que creamos en el controlador
+    var topUsuarios = ViewBag.TopUsuariosCarga as List<seguimiento_de_tareas_de_proyectos_MVC.Controllers.RankingUsuarioDTO>;
 }
 
-<div class="container mt-4">
-    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm border-start border-primary border-5">
-        <div class="container-fluid py-5">
-            <h1 class="display-5 fw-bold">Sistema de Gestión de Tareas</h1>
-            <p class="col-md-8 fs-4 text-muted">Bienvenido al panel de control del Grupo 6. Aquí puedes administrar proyectos, asignar responsabilidades y monitorear el avance de cada tarea en tiempo real.</p>
-            <hr class="my-4">
-            <div class="d-flex gap-2">
-                @Html.ActionLink("Ver Mis Tareas", "Index", "Tareas", null, new { @class = "btn btn-primary btn-lg px-4" })
-                @Html.ActionLink("Nuevo Proyecto", "Create", "Proyecto", null, new { @class = "btn btn-outline-secondary btn-lg px-4" })
+<div class="container mt-2">
+    <div class="p-4 mb-4 bg-white rounded shadow-sm border border-start border-primary border-4">
+        <h1 class="fw-bold text-dark">Panel de Control General</h1>
+        <p class="text-muted m-0">Bienvenido al ecosistema del Grupo 6. Los siguientes indicadores se calculan en tiempo real.</p>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100 p-3">
+                <h6 class="text-uppercase text-secondary fw-bold small mb-2">Progreso General del Ciclo</h6>
+                <div class="d-flex align-items-baseline gap-2 mb-2">
+                    <h2 class="fw-bold text-primary m-0">@ViewBag.PorcentajeProgreso%</h2>
+                    <span class="text-muted small">de @ViewBag.TotalTareasGlobales tareas resueltas</span>
+                </div>
+                <div class="progress" style="height: 12px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                         role="progressbar"
+                         style="width: @ViewBag.PorcentajeProgreso%;"
+                         aria-valuenow="@ViewBag.PorcentajeProgreso"
+                         aria-valuemin="0"
+                         aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 h-100 p-3 justify-content-center">
+                <h6 class="text-uppercase text-secondary fw-bold small mb-1">Proyecto con Mayor Actividad</h6>
+                <h3 class="fw-bold text-dark mb-1 text-truncate">@ViewBag.ProyectoMasActivo</h3>
+                <span class="badge bg-warning text-dark align-self-start fw-semibold">
+                    <i class="bi bi-layers"></i> Contiene @ViewBag.CantidadProyectoMasActivo tareas críticas
+                </span>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 text-center">
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
-                    </div>
-                    <h3 class="h5">Usuarios</h3>
-                    <p class="text-muted small">Administra los integrantes del equipo y sus roles asignados.</p>
-                    @Html.ActionLink("Gestionar", "Index", "Usuarios", null, new { @class = "btn btn-sm btn-outline-primary" })
+    <div class="row g-4">
+        <div class="col-md-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white fw-bold py-3">
+                    <i class="bi bi-trophy"></i> Carga Laboral por Integrante
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @if (topUsuarios != null && topUsuarios.Count > 0)
+                        {
+                            int puesto = 1;
+                            foreach (var usuario in topUsuarios)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                                    <div>
+                                        <span class="fw-bold text-primary me-2">#@puesto</span>
+                                        <span class="text-dark fw-semibold">@usuario.NombreEmpleado</span>
+                                    </div>
+                                    <span class="badge bg-secondary rounded-pill">@usuario.TotalTareas asignadas</span>
+                                </li>
+                                puesto++;
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item text-center text-muted py-3">No hay datos de asignación registrados.</li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <i class="bi bi-folder-fill text-success" style="font-size: 2rem;"></i>
-                    </div>
-                    <h3 class="h5">Proyectos</h3>
-                    <p class="text-muted small">Visualiza el estado de los proyectos actuales del ciclo.</p>
-                    @Html.ActionLink("Ver Lista", "Index", "Proyecto", null, new { @class = "btn btn-sm btn-outline-success" })
+        <div class="col-md-7">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-secondary text-white fw-bold py-3">
+                    Acceso Inmediato a Tablas Maestras
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <i class="bi bi-check-circle-fill text-info" style="font-size: 2rem;"></i>
+                <div class="card-body d-flex flex-column justify-content-around">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <a href="@Url.Action("Index", "Tareas")" class="btn btn-outline-primary w-100 py-3 fw-bold">
+                                <i class="bi bi-check2-square d-block mb-1 fs-4"></i> Mis Tareas
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="@Url.Action("Index", "Proyectos")" class="btn btn-outline-success w-100 py-3 fw-bold">
+                                <i class="bi bi-folder d-block mb-1 fs-4"></i> Ver Proyectos
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="@Url.Action("Index", "Usuarios")" class="btn btn-outline-dark w-100 py-3 fw-bold">
+                                <i class="bi bi-people d-block mb-1 fs-4"></i> Usuarios
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="@Url.Action("Index", "Reportes")" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">
+                                <i class="bi bi-bar-chart-line d-block mb-1 fs-4"></i> Ver Reportes (Dual)
+                            </a>
+                        </div>
                     </div>
-                    <h3 class="h5">Avance Real</h3>
-                    <p class="text-muted small">Revisa cuáles tareas están pendientes o próximas a vencer.</p>
-                    @Html.ActionLink("Revisar Tareas", "Index", "Tareas", null, new { @class = "btn btn-sm btn-outline-info" })
                 </div>
             </div>
         </div>
